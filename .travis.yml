@@ -1,0 +1,10 @@
+sudo: false
+
+jobs:
+  include:
+    - stage: unit tests
+      script: echo one
+    - stage: unit tests
+      script: echo two
+    - stage: test staging
+      script: 'curl http://sf-stages-staging.herokuapp.com'

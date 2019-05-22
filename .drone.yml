@@ -1,0 +1,58 @@
+kind: pipeline
+name: deploy
+
+steps:
+  - name: unit-test
+    image: node:12.2.0-alpine
+    commands:
+      - npm install
+      - npm run test
+    when:
+      branch:
+        include:
+          - feature/*
+          - master
+          - dev
+      event:
+        include:
+          - push
+          - pull_request
+
+  - name: build-branch-image
+    image: plugins/docker
+    settings:
+      repo: allovince/drone-ci-demo
+      username: allovince
+      password:
+        from_secret: DOCKER_PASSWORD
+      tag:
+        - ${DRONE_BRANCH##feature/}
+    when:
+      branch: feature/*
+      event: push
+
+  - name: build-test-image
+    image: plugins/docker
+    settings:
+      repo: allovince/drone-ci-demo
+      username: allovince
+      password:
+        from_secret: DOCKER_PASSWORD
+      tag:
+        - test
+    when:
+      branch: dev
+      event: push
+
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook: https://hooks.slack.com/services/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
+      channel: dev
+      username: myhk2009
+      template: >
+        {{#success build.status}}
+          {{repo.name}}  build {{build.number}}  {{build.ref}}  {{build.link}}  succeeded.
+        {{else}}
+          {{repo.name}}  build {{build.number}}  {{build.ref}}  {{build.link}}  failed.
+        {{/success}}
