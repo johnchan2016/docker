@@ -1,8 +1,13 @@
-sudo: false
-
 jobs:
   include:
     - stage: unit tests
       script: echo one
     - stage: test staging
       script: 'curl http://sf-stages-staging.herokuapp.com'
+
+notifications:
+  email:
+    recipients:
+    - myhk2009@gmail.com
+    on_success: change
+    on_failure: always
