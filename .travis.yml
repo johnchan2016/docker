@@ -1,13 +1,17 @@
+language: node_js
+node_js:
+  - "10"
+
 jobs:
   include:
     - stage: unit tests
-      script: echo one
+      script: 'npm run lint'
     - stage: test staging
-      script: 'curl http://sf-stages-staging.herokuapp.com'
+      script: 'npm run test'
 
 notifications:
   email:
     recipients:
     - myhk2009@gmail.com
-    on_success: change
+    on_success: always
     on_failure: always
