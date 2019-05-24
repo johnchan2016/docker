@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "eslint lib/*.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +13,8 @@
     "express": "^4.17.0",
     "mocha": "^6.1.4",
     "should": "^13.2.3"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0"
   }
 }

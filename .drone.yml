@@ -1,0 +1,47 @@
+kind: pipeline
+name: deploy
+
+steps:
+  - name: unit-test
+    image: node:12.2.0-alpine
+    commands:
+      - npm install
+      - npm run lint
+      - npm run test
+    when:
+      branch:
+        include:
+          - feature/*
+          - master
+          - dev
+      event:
+        include:
+          - push
+          - pull_request
+
+  - name: build-test-image
+    image: plugins/docker
+    settings:
+      repo: allovince/drone-ci-demo
+      username: allovince
+      password:
+        from_secret: DOCKER_PASSWORD
+      tag:
+        - test
+    when:
+      branch: dev
+      event: push
+
+  - name: notify
+    image: drillster/drone-email
+    from: myhkapple@gmail.com
+    host: smtp.gmail.com
+    port: 587
+    username: myhkapple
+    password: abcd_1234
+    subject: >
+      [{{ build.status }}]
+      {{ repo.owner }}/{{ repo.name }}
+      ({{ build.branch }} - {{ truncate build.commit 8 }})
+    body: >
+      https://git.io/vgvPz
