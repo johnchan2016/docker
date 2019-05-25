@@ -21,7 +21,12 @@ jobs:
       deploy: &heroku
         provider: haroku
         api_key:
-          secure: $HEROKU_API
+          secure: "pCXWxFe3yeZO8aKzJBJktK1IQ5ZZYR8QuOPfbvxGsHmm2dYmGBLvC83HTUcrjpcL1cBZ/xMam6Hx1kZoEOGI7yL0AX+nkzPVYF9RYEHbcJfbF
+FuhtAzppNRXYPez00QDpW9JNzXKEqXx3sm4DLluebNZO/0xbwzDMIqEeeqLGuFazEz+rfffs4wteeiLfdJlMGitxxunFNmMQWKuPW209ohLux0zhy+H7wbf
+zqNsm2atF2ngVgB+Cfojpe3XlWYcz8Bubf2qowiwPBo99HGUlQ1QtX/7zJtD7K3SY2yXqvhloMkCc0IAsQFiq02E9NKLs51X9+r7uAdbrJv1FC5GrnRzxTZ
+YHTRApfds2uSWYE+A5IwyS8ljMcG+FsYyHN2KuLbHETIiYfwHi8rVES9tV+80IEQzsoNS4+yIjxEewfAO5Mqn2wE73kgShcu5la4isJQIReLfo/E0Bz6lbC
+NuTi1yID4QyMoGhmCXCqUkeN/FtXBTVR/I1BRDmGZWiZZUW8kfZgGF23D2YRErVCjc37ZEVn7cg9V+yeD74KwYtLGGaQO84KPyM/wpZxZPs1P9YLZlPWYBV
+ZqDe/KrdSgoxnzw7M3LRCAtNbqxu5WqC5uhMKGmoQhVZxrTEQhY70AxA3hX0FKuH8ZdYi6QLrsz/O6K0TH0EJRpgcIzk8="
         on:
           all_branches: true
         skip_cleanup: true  
