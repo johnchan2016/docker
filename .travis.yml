@@ -19,7 +19,7 @@ jobs:
     - stage: deploy
       script: skip     # usually you do not want to rerun any tests
       deploy: &heroku
-        provider: haroku
+        provider: heroku
         api_key: 5468f362-32b4-4fb4-8729-3aef286e0818
         on:
           all_branches: true
