@@ -1,33 +1,33 @@
 language: node_js
 node_js:
-  - "10"
+- '10'
 cache:
   directories:
-    - 'node_modules'
-    
+  - node_modules
 jobs:
   include:
-    - stage: Lint Test
-      script: 'npm run lint'
+  - stage: Lint Test
+    script: npm run lint
 
-    - stage: Unit Test
-      script: 'npm run test'
+  - stage: Unit Test
+    script: npm run test
 
-    - stage: Build
-      script: 'npm run build'
+  - stage: Build
+    script: npm run build
 
-    - stage: deploy
-      script: skip     # usually you do not want to rerun any tests
-      deploy: &heroku
-        provider: heroku
-        api_key: 5468f362-32b4-4fb4-8729-3aef286e0818
-        on:
-          all_branches: true
-        skip_cleanup: true  
-
+  - stage: deploy
+    script: skip
+    deploy:
+      provider: heroku
+      api_key:
+        secure: lCiOLBtm6AFhf+bnvlqGlC6DiTkMHG9YzISj9gYEbi2GDzuSr9kPBSwulpajtW+Ei/k3SZ1QxQg06u84FbGPPZcxxhodbuNxdWUjcXPDee/zex4juuvaSiH7pm6Pkqwxs3obmlhaZ0DzfmEDcy8oDytL1vERxIGsbc9SIn4mF4hpFuoIJtUtG7Cqq5n4eMjSlpw6+AI86IhL12ErcNO8NKTl2vTcV7bgaSI29snV+j9Wja+ScjcvxG1k7Jwh3l8+ylfhH3+5+7XbckTTGwNazQlB3K53MreDWgNSo35pBvKl80YsmtD2DcSgC43hovcEuK2pdLojfH5BoR2HAU3Bx85LqAu+R59sL3/4cwGzS9zu0XzF4i3gvXWl6fXb4aLqDlHME62iMHRty67QLWUq4HvFDdaEYTwuzLn7dGtMCtFtG26x4Fhy9qgw7a6nRJtmUw8UiqTeZkWDTxT5vjRs428MiamzgGLSLaQAiGpd1zmOIIkgmm5Wourh0yTQYfccH2Lvji7XDyO8lHEbelofnHu3WpMcTS0uh658e8QDhf2gURy6wwWioF6dphCVczB/B4r/UD1u7N+d44PcGVURdbbkxnfzfaRV0hUT7hRxuud0muuCmDjyop1V306C7guCf/LeCgOyHNOiKRosZWup52fvUuA1SDF14t72qAz6BHo=
+      on:
+        all_branches: true
+      skip_cleanup: true
 notifications:
   email:
     recipients:
     - myhk2009@gmail.com
     on_success: always
     on_failure: always
+
