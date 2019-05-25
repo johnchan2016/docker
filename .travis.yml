@@ -8,19 +8,16 @@ jobs:
   include:
   - stage: Lint Test
     script: npm run lint
-
   - stage: Unit Test
     script: npm run test
-
   - stage: Build
     script: npm run build
-
   - stage: deploy
     script: skip
     deploy:
       provider: heroku
       api_key:
-        secure: lCiOLBtm6AFhf+bnvlqGlC6DiTkMHG9YzISj9gYEbi2GDzuSr9kPBSwulpajtW+Ei/k3SZ1QxQg06u84FbGPPZcxxhodbuNxdWUjcXPDee/zex4juuvaSiH7pm6Pkqwxs3obmlhaZ0DzfmEDcy8oDytL1vERxIGsbc9SIn4mF4hpFuoIJtUtG7Cqq5n4eMjSlpw6+AI86IhL12ErcNO8NKTl2vTcV7bgaSI29snV+j9Wja+ScjcvxG1k7Jwh3l8+ylfhH3+5+7XbckTTGwNazQlB3K53MreDWgNSo35pBvKl80YsmtD2DcSgC43hovcEuK2pdLojfH5BoR2HAU3Bx85LqAu+R59sL3/4cwGzS9zu0XzF4i3gvXWl6fXb4aLqDlHME62iMHRty67QLWUq4HvFDdaEYTwuzLn7dGtMCtFtG26x4Fhy9qgw7a6nRJtmUw8UiqTeZkWDTxT5vjRs428MiamzgGLSLaQAiGpd1zmOIIkgmm5Wourh0yTQYfccH2Lvji7XDyO8lHEbelofnHu3WpMcTS0uh658e8QDhf2gURy6wwWioF6dphCVczB/B4r/UD1u7N+d44PcGVURdbbkxnfzfaRV0hUT7hRxuud0muuCmDjyop1V306C7guCf/LeCgOyHNOiKRosZWup52fvUuA1SDF14t72qAz6BHo=
+        secure: C3oTiOxkg9/Qvgi6ey2O2oDoCQ4l4UVWM5JneP9g8Am/VHZb9ih30lWUd3tfj8enjhFhGl5dU1zTzXdCtHE1S8EbxbQSQDnoPhf1sqSZvTiwNYx23w+gJ33u8r0KmVVnXypod3U5rtcukaQikbpsPFGVYpM1pg1HwJKHHrqjFDrO/Ear48KUxlyKbNmrOh33qbejMm+/0Vk0kd1GO51Y2MNVFhbL9WE4nxOoYP1SXasKycKaBTmMJjp2UU8GsCccjupjs5uInmAalVY1eHX0YT0kp94qIkqQNhv7Hhi1/9/yDoLJciBl9J/Gdzo9sJqo7nuMdoU6zqORmmV5Wri4HJmv5usAjTEVIkzkKtoObB10RVonNzEViiNWpRAID7EUpswkKzojv+xCh/IJyaovoK5mGDgMoFd9Y5oXTIXlyHe4LnkKpNGg7SzZtBJ3jWu8rCK1JXQ8/TCB3NBAsTFEmWFre6DHx3CldUsEUq7ZMsGoYedIC+WrrqxSnH7PMRmpktf+Yla45IkV0TlG7tddmd4UnfciVajrLOElOG3fRZ4QPW1sgSOEMz7EojF4nUSsrlZ+i4lsrlF+AIWCaT3yYQXpafJl/DgiYhgK2ekNLW5oJ9hjPa5hzAJfaLuWtpsm++ESZUQYKJTSY8JBiglYw4P7IqSlREFNAghbacimjso=
       on:
         all_branches: true
       skip_cleanup: true
