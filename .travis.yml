@@ -9,10 +9,22 @@ jobs:
   include:
     - stage: Lint Test
       script: 'npm run lint'
+
     - stage: Unit Test
       script: 'npm run test'
+
     - stage: Build
-      script: 'npm run build' 
+      script: 'npm run build'
+
+    - stage: deploy
+      script: skip     # usually you do not want to rerun any tests
+      deploy: &heroku
+        provider: haroku
+        api_key:
+          secure: $HEROKU_API
+        on:
+          all_branches: true
+        skip_cleanup: true  
 
 notifications:
   email:
