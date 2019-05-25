@@ -4,14 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "mocha",
-    "lint": "eslint lib/*.js"
+    "lint": "eslint ./src/**/*.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
     "express": "^4.17.0",
+    "http-errors": "~1.6.3",
     "mocha": "^6.1.4",
+    "morgan": "~1.9.1",
+    "pug": "^2.0.3",
     "should": "^13.2.3"
   },
   "devDependencies": {
