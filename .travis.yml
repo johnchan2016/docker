@@ -17,7 +17,8 @@ jobs:
     deploy:
       provider: heroku
       api_key:
-        secure: C3oTiOxkg9/Qvgi6ey2O2oDoCQ4l4UVWM5JneP9g8Am/VHZb9ih30lWUd3tfj8enjhFhGl5dU1zTzXdCtHE1S8EbxbQSQDnoPhf1sqSZvTiwNYx23w+gJ33u8r0KmVVnXypod3U5rtcukaQikbpsPFGVYpM1pg1HwJKHHrqjFDrO/Ear48KUxlyKbNmrOh33qbejMm+/0Vk0kd1GO51Y2MNVFhbL9WE4nxOoYP1SXasKycKaBTmMJjp2UU8GsCccjupjs5uInmAalVY1eHX0YT0kp94qIkqQNhv7Hhi1/9/yDoLJciBl9J/Gdzo9sJqo7nuMdoU6zqORmmV5Wri4HJmv5usAjTEVIkzkKtoObB10RVonNzEViiNWpRAID7EUpswkKzojv+xCh/IJyaovoK5mGDgMoFd9Y5oXTIXlyHe4LnkKpNGg7SzZtBJ3jWu8rCK1JXQ8/TCB3NBAsTFEmWFre6DHx3CldUsEUq7ZMsGoYedIC+WrrqxSnH7PMRmpktf+Yla45IkV0TlG7tddmd4UnfciVajrLOElOG3fRZ4QPW1sgSOEMz7EojF4nUSsrlZ+i4lsrlF+AIWCaT3yYQXpafJl/DgiYhgK2ekNLW5oJ9hjPa5hzAJfaLuWtpsm++ESZUQYKJTSY8JBiglYw4P7IqSlREFNAghbacimjso=
+        secure: $HEROKU_KEY
+      app: citest2019
       on:
         all_branches: true
       skip_cleanup: true
