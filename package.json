@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha",
-    "lint": "eslint ./src/**/*.js"
+    "lint": "eslint ./src/**/*.js",
+    "build": "node ./node_modules/gulp/node_modules/gulp-cli/bin/gulp.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,9 @@
     "should": "^13.2.3"
   },
   "devDependencies": {
-    "eslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "gulp": "^4.0.2",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-uglify": "^3.0.2"
   }
 }
