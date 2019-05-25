@@ -20,13 +20,7 @@ jobs:
       script: skip     # usually you do not want to rerun any tests
       deploy: &heroku
         provider: haroku
-        api_key:
-          secure: "dS2p8ad1SKZFUwTXvvAHv7t6LvyNQwJxCl3AuT4pjQDxasxWjJ/mVs6nVp27PX+4bH9E6BvFdkboUHGVjEk2qPpVG8O8A00OjcArpA6WPrPsG
-NML3UrApWAxGxPHNgEerBsUtacjcL1ZxRxHb9S2vmbKCKZEGwlcBRUHeyT7L3N129FxV7R5swe9rbDaTs+aBZ+oSho8gw/YlJPV7Me+FjjljXjbpcnhjGz0N
-Tp5C6rAnfieaLCYwEm0yku9LxgUxLkt42KNbqHvPAZ1bKv+NlBwGcVBojV1LaYBcwu25e7hnFx9AUfftJAUOddKDtaqeeO7ZYp6B6a26Cbd/YWGohVycXTIQ
-aU8SgBgmGAXGCYV6uOvLfGJ0cq7ZBsqQUXgdbKAmW/0q9oHZWzbdL7AWO5zki2UWGFYNBBwM8kVnV3Bci3ayu2QBk3/5/zVfDQ/ksUXvwyTD8VpALwXJTqb+
-ePj68pei/2ZIdjwxUb/vqKwSlGcUE176lvGECMHGtka0Ra+GxnPalhe+m52XnleeSOl5aD1MfAFcduBH6HEzePiwxoVC7lzRi3/zC1kVUgbgWFKpCJEHJ5Yf
-nKX7KIoRcy4OR4BcIDa4xlUBwoAYcMfT6Imzhsh/hl57Rg4H0/6ikteojy2fjy2SQZsy8yIrzHSI1TGbuH2mCPGHCcm3SE="
+        api_key: 5468f362-32b4-4fb4-8729-3aef286e0818
         on:
           all_branches: true
         skip_cleanup: true  
