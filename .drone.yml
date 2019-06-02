@@ -24,7 +24,8 @@ steps:
     image: plugins/docker
     settings:
       repo: myhk2009/docker-ci    # drone-owner/drone-repo
-      username: DOCKER_USERNAME   # drone a/c
+      username: 
+        from_secret: DOCKER_USERNAME   # drone a/c
       auto_tag: true
       password:
         from_secret: DOCKER_PASSWORD
