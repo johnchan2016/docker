@@ -34,7 +34,7 @@ services:
       - DRONE_GITHUB_CLIENT_SECRET=511fb461d7fb1f72bec6a8d581bae6566a6597dd
       - DRONE_RUNNER_CAPACITY=2
       - DRONE_SECRET=secret
-      - DRONE_USER_CREATE=username:johnchan,admin:true
+      - DRONE_USER_CREATE=username:johnchan2016,admin:true # github username
       - DRONE_SERVER_PROTO=http
     networks:
       - appnet
