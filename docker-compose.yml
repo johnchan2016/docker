@@ -41,4 +41,3 @@ services:
 
 networks:
   appnet:
-    external: true
