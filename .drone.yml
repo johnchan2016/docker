@@ -8,29 +8,43 @@ steps:
       - npm install
       - npm run lint
       - npm run test
+      #- /bin/bash /scripts/build-tag.sh
     when:
       branch:
         include:
           - feature/*
           - master
-          - dev
+          - develop
       event:
         include:
           - push
           - pull_request
 
-  - name: build-test-image
+  - name: publish-test-image
     image: plugins/docker
     settings:
-      repo: allovince/drone-ci-demo
-      username: allovince
+      repo: myhk2009/docker-ci    # drone-owner/drone-repo
+      username: DOCKER_USERNAME   # drone a/c
+      auto_tag: true
       password:
         from_secret: DOCKER_PASSWORD
       tag:
-        - test
+        - latest
     when:
-      branch: dev
-      event: push
+      branch: feature/*
+      event: pull_request
+
+  # - name: deploy-image
+  #   image: appleboy/drone-ssh
+  #   pull: true  # always pull the latest version of the `drone-ssh` plugin
+  #   secrets: [ ssh_username, ssh_password ]
+  #   host: http://localhost
+  #   port: 22
+  #   command_timeout: 180
+  #   script:
+  #     - /bin/bash /scripts/deploy.sh  # or whereever you put your `deploy.sh`
+  #   when:
+  #     event: [push, tag, deployment]
 
   - name: notify
     image: drillster/drone-email
