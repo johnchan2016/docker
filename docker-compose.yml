@@ -21,7 +21,7 @@ services:
     image: drone/drone:1.1
     container_name: drone-server
     ports:
-      - 8000:8000
+      - 8000:80
       - 8009:9000
     volumes:
       - /var/lib/drone:/data
