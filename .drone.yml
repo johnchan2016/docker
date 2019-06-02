@@ -8,7 +8,7 @@ steps:
       - npm install
       - npm run lint
       - npm run test
-      #- /bin/bash /scripts/build-tag.sh
+      - /bin/bash ./scripts/build-tag.sh
     when:
       branch:
         include:
@@ -30,7 +30,7 @@ steps:
       password:
         from_secret: DOCKER_PASSWORD
       tag:
-        - latest
+        - ${TAG_NO}
     when:
       branch: feature/*
       event: pull_request
