@@ -8,7 +8,7 @@ steps:
       - npm install
       - npm run lint
       - npm run test
-      - /bin/bash ./scripts/build-tag.sh
+      - ENTRYPOINT ["./scripts/build-tag.sh"]
     when:
       branch:
         include:
