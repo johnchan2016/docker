@@ -22,7 +22,7 @@ steps:
   - name: get-tag-no
     image: plugins/docker
     commands:    
-      - ENTRYPOINT ["./scripts/build-tag.sh"]
+      - /bash/sh ./scripts/build-tag.sh
       - echo "${TAG_NO}"     
 
   - name: publish-test-image
@@ -38,7 +38,10 @@ steps:
         - ${TAG_NO}
     when:
       branch: feature/*
-      event: pull_request
+      event: 
+        include:
+          - push      
+          - pull_request
 
   # - name: deploy-image
   #   image: appleboy/drone-ssh
