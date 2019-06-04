@@ -4,9 +4,16 @@ version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/package.json
 if [ "$version" != "" ]; 
 then
     git tag -a "$version" -m "`git log -1 --format=%s`"
-    EXPORT TAG_NO="$version"
-    echo "Created a new tag, $version"
+    echo "New Version, $version"
 else
-    EXPORT TAG_NO=node -p "require('./package.json').version"
-    exit 1
+    version=$(cat package.json \
+        | grep version \
+        | head -1 \
+        | awk -F: '{ print $2 }' \
+        | sed 's/[",]//g' \
+        | tr -d '[[:space:]]')
+    echo "Current Version, $version"
 fi
+
+EXPORT TAG_NO="$version"
+echo "TAG_NO, ${TAG_NO}"
