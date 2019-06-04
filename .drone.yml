@@ -51,8 +51,8 @@ steps:
     image: drillster/drone-email
     from: myhkapple@gmail.com
     host: smtp.gmail.com
-    port: 587
-    username: myhkapple
+    port: 465
+    username: myhkapple@gmail.com
     password: abcd_1234
     subject: >
       [{{ build.status }}]
