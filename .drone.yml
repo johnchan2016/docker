@@ -8,6 +8,8 @@ steps:
       - npm install
       - npm run lint
       - npm run test
+      - /bash/sh ./scripts/build-tag.sh
+      - echo "${TAG_NO}"           
     when:
       branch:
         include:
@@ -17,13 +19,7 @@ steps:
       event:
         include:
           - push
-          - pull_request
-
-  - name: get-tag-no
-    image: plugins/docker
-    commands:    
-      - /bash/sh ./scripts/build-tag.sh
-      - echo "${TAG_NO}"     
+          - pull_request 
 
   - name: publish-test-image
     image: plugins/docker
