@@ -8,7 +8,6 @@ steps:
       - npm install
       - npm run lint
       - npm run test
-      - ENTRYPOINT ["./scripts/build-tag.sh"]
     when:
       branch:
         include:
@@ -22,6 +21,8 @@ steps:
 
   - name: publish-test-image
     image: plugins/docker
+    commands:    
+      - ENTRYPOINT ["./scripts/build-tag.sh"]
     settings:
       repo: myhk2009/docker-ci    # drone-owner/drone-repo
       username: 
