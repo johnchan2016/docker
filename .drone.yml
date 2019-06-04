@@ -20,10 +20,9 @@ steps:
           - pull_request
 
   - name: get-tag-no
-    image: plugins/docker
+    image: ubuntu
     commands:    
-      - bash ./scripts/build-tag.sh
-      - echo "${TAG_NO}"     
+      - bash ./scripts/build-tag.sh   
 
   - name: publish-test-image
     image: plugins/docker
