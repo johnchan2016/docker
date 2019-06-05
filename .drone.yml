@@ -20,17 +20,17 @@ steps:
           - pull_request
 
   - name: get-tag-no
-    image: ubuntu
+    image: alpine
     commands:    
-      - bash ./scripts/build-tag.sh   
+      #- bash ./scripts/build-tag.sh
+      - sh ./scripts/build-tag.sh
 
   - name: publish-test-image
     image: plugins/docker
     settings:
-      repo: myhk2009/docker-ci    # drone-owner/drone-repo
+      repo: myhk2009/docker-ci
       username: 
-        from_secret: DOCKER_USERNAME   # drone a/c
-      auto_tag: true
+        from_secret: DOCKER_USERNAME   # docker hub a/c
       password:
         from_secret: DOCKER_PASSWORD
       tag:
@@ -57,10 +57,9 @@ steps:
   - name: notify
     image: drillster/drone-email
     from: myhkapple@gmail.com
-    host: smtp.gmail.com
-    port: 465
-    username: myhkapple@gmail.com
-    password: abcd_1234
+    recipients:
+      - myhkapple@gmail.com
+    secrets: [ email_username, email_password, email_host, email_port ]      
     subject: >
       [{{ build.status }}]
       {{ repo.owner }}/{{ repo.name }}

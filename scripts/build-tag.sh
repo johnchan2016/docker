@@ -1,19 +1,26 @@
 #! /bin/bash
-version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/package.json | grep '^\+.*version' | sed -s 's/[^0-9\.]//g'`
+# version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/package.json | grep '^\+.*version' | sed -s 's/[^0-9\.]//g'`
 
-if [ "$version" != "" ]; 
-then
-    git tag -a "$version" -m "`git log -1 --format=%s`"
-    echo "New Version, $version"
-else
-    version=$(cat package.json \
-        | grep version \
-        | head -1 \
-        | awk -F: '{ print $2 }' \
-        | sed 's/[",]//g' \
-        | tr -d '[[:space:]]')
-    echo "Current Version, $version"
-fi
+# if [ "$version" != "" ]; 
+# then
+#     git tag -a "$version" -m "`git log -1 --format=%s`"
+#     echo "New Version, $version"
+# else
+#     version=$(cat package.json \
+#         | grep version \
+#         | head -1 \
+#         | awk -F: '{ print $2 }' \
+#         | sed 's/[",]//g' \
+#         | tr -d '[[:space:]]')
+#     echo "Current Version, $version"
+# fi
 
-EXPORT TAG_NO="$version"
+version=$(cat package.json \
+    | grep version \
+    | head -1 \
+    | awk -F: '{ print $2 }' \
+    | sed 's/[",]//g' \
+    | tr -d '[[:space:]]')
+echo "Current Version, $version"
+export TAG_NO="$version"
 echo "TAG_NO, ${TAG_NO}"
