@@ -23,6 +23,11 @@ steps:
     image: alpine
     commands:
       - sh ./scripts/build-tag.sh
+      - echo $${EMAIL_USERNAME}
+      - echo $${EMAIL_PASSWORD}
+      - echo $${EMAIL_HOST}
+      - echo $${EMAIL_PORT}  
+
 
   # - name: publish-test-image
   #   image: plugins/docker

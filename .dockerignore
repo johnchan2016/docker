@@ -1,0 +1,12 @@
+node_modules
+.dockerignore
+Dockerfile
+npm-debug.log
+.git
+dist
+
+# drone setup
+.travis.yml
+.drone.yml
+docker-compose.yml
+nginx
