@@ -58,16 +58,35 @@ steps:
   #   when:
   #     event: [push, tag, deployment]
 
-  - name: notify
-    image: drillster/drone-email
-    from: myhkapple@gmail.com
-    recipients:
-      - myhkapple@gmail.com
-    secrets: [ email_username, email_password, email_host, email_port ]      
-    skip_verify: true
-    subject: >
-      [{{ build.status }}]
-      {{ repo.owner }}/{{ repo.name }}
-      ({{ build.branch }} - {{ truncate build.commit 8 }})
-    body: >
-      https://git.io/vgvPz
+  # - name: notify
+  #   image: drillster/drone-email
+  #   from: myhkapple@gmail.com
+  #   recipients:
+  #     - myhkapple@gmail.com
+  #   secrets: [ email_username, email_password, email_host, email_port ]      
+  #   skip_verify: true
+  #   subject: >
+  #     [{{ build.status }}]
+  #     {{ repo.owner }}/{{ repo.name }}
+  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
+  #   body: >
+  #     https://git.io/vgvPz
+
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook: https://hooks.slack.com/services/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
+      channel: dev
+      username: myhk2009
+    when:
+        status: [ success, failure ]
+    template: >
+        {{#success build.status}}
+            {{build.author}} trigger {{repo.name}} build {{build.number}} by {{build.event}} to branch {{build.branch}} succeeded.
+            <{{build.link}}>
+        {{else}}
+            {{repo.name}} build {{build.number}} to branch {{build.branch}} failed. Fix me please.
+            <{{build.link}}>
+        {{/success}}
+
+    branches: [ master, develop, feature/* ]
