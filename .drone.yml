@@ -17,37 +17,34 @@ steps:
       event:
         include:
           - push
+          - pull_request
 
   - name: get-tag-no
     image: alpine
     commands:
       - sh ./scripts/build-tag.sh
-      - echo $EMAIL_USERNAME
-      - echo ${EMAIL_USERNAME}
       - echo $$EMAIL_USERNAME
-      - echo $${EMAIL_USERNAME}
-      - echo "$EMAIL_USERNAME"
-      - echo "${EMAIL_USERNAME}"
-      - echo "$$EMAIL_USERNAME"
-      - echo "$${EMAIL_USERNAME}"
+      - echo $$EMAIL_PASSWORD
+      - echo $$EMAIL_HOST
+      - echo $$EMAIL_PORT
 
 
-  - name: publish-test-image
-    image: plugins/docker
-    settings:
-      repo: myhk2009/docker-ci
-      username: 
-        from_secret: DOCKER_USERNAME   # docker hub a/c
-      password:
-        from_secret: DOCKER_PASSWORD
-      tag:
-        - ${TAG_NO}
-    when:
-      branch: feature/*
-      event: 
-        include:
-          - push      
-          - pull_request
+  # - name: publish-test-image
+  #   image: plugins/docker
+  #   settings:
+  #     repo: myhk2009/docker-ci
+  #     username: 
+  #       from_secret: DOCKER_USERNAME   # docker hub a/c
+  #     password:
+  #       from_secret: DOCKER_PASSWORD
+  #     tag:
+  #       - ${TAG_NO}
+  #   when:
+  #     branch: feature/*
+  #     event: 
+  #       include:
+  #         - push      
+  #         - pull_request
 
   # - name: deploy-image
   #   image: appleboy/drone-ssh
@@ -61,26 +58,25 @@ steps:
   #   when:
   #     event: [push, tag, deployment]
 
-  # - name: notify
-  #   image: drillster/drone-email
-  #   from: postmaster@sandbox82a395c2932442a980c051ce66c51038.mailgun.org
-  #   recipients:
-  #     - myhk2009@gmail.com
-  #   host: smtp.mailgun.org
-  #   username: postmaster@sandbox82a395c2932442a980c051ce66c51038.mailgun.org
-  #   password: 387eeadb70d66d2c496718aaf7adb18d-87cdd773-091417db
-  #   subject: >
-  #     [{{ build.status }}]
-  #     {{ repo.owner }}/{{ repo.name }}
-  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
-  #   body: >
-  #     https://git.io/vgvPz
+  - name: notify
+    image: drillster/drone-email
+    from: myhkapple@gmail.com
+    recipients:
+      - myhkapple@gmail.com
+    secrets: [ email_username, email_password, email_host, email_port ]      
+    skip_verify: true
+    subject: >
+      [{{ build.status }}]
+      {{ repo.owner }}/{{ repo.name }}
+      ({{ build.branch }} - {{ truncate build.commit 8 }})
+    body: >
+      https://git.io/vgvPz
 
   - name: slack
     image: plugins/slack
     settings:
-      webhook: #https://hooks.slack.com/services/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
-        from_secret: slack_webhook
+      webhook: # https://hooks.slack.com/services/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
+      secrets: [ SLACK_WEBHOOK ]
       channel: dev
       username: myhk2009
     when:
