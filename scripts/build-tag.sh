@@ -21,6 +21,6 @@ version=$(cat package.json \
     | awk -F: '{ print $2 }' \
     | sed 's/[",]//g' \
     | tr -d '[[:space:]]')
-echo "Current Version, $version"
+echo "Current Version, $version" #variable
 export TAG_NO="$version"
-echo "TAG_NO, ${TAG_NO}"
+echo "TAG_NO, ${TAG_NO}" # environment variables
