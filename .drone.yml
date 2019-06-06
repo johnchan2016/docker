@@ -32,22 +32,22 @@ steps:
       - echo "$${EMAIL_USERNAME}"
 
 
-  # - name: publish-test-image
-  #   image: plugins/docker
-  #   settings:
-  #     repo: myhk2009/docker-ci
-  #     username: 
-  #       from_secret: DOCKER_USERNAME   # docker hub a/c
-  #     password:
-  #       from_secret: DOCKER_PASSWORD
-  #     tag:
-  #       - ${TAG_NO}
-  #   when:
-  #     branch: feature/*
-  #     event: 
-  #       include:
-  #         - push      
-  #         - pull_request
+  - name: publish-test-image
+    image: plugins/docker
+    settings:
+      repo: myhk2009/docker-ci
+      username: 
+        from_secret: DOCKER_USERNAME   # docker hub a/c
+      password:
+        from_secret: DOCKER_PASSWORD
+      tag:
+        - ${TAG_NO}
+    when:
+      branch: feature/*
+      event: 
+        include:
+          - push      
+          - pull_request
 
   # - name: deploy-image
   #   image: appleboy/drone-ssh
