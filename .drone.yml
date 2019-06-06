@@ -67,7 +67,7 @@ steps:
     recipients:
       - myhk2009@gmail.com
     secrets: [ email_username, email_password, email_host, email_port ]      
-    skip_verify: true
+    skip_verify: true 
     subject: >
       [{{ build.status }}]
       {{ repo.owner }}/{{ repo.name }}
