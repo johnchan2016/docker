@@ -79,7 +79,8 @@ steps:
   - name: slack
     image: plugins/slack
     settings:
-      webhook: https://hooks.slack.com/services/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
+      webhook: #https://hooks.slack.com/services/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
+        from_secret: slack_webhook
       channel: dev
       username: myhk2009
     when:
