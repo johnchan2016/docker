@@ -17,7 +17,6 @@ steps:
       event:
         include:
           - push
-          - pull_request
 
   - name: get-tag-no
     image: alpine
@@ -62,19 +61,19 @@ steps:
   #   when:
   #     event: [push, tag, deployment]
 
-  # - name: notify
-  #   image: drillster/drone-email
-  #   from: myhkapple@gmail.com
-  #   recipients:
-  #     - myhkapple@gmail.com
-  #   secrets: [ email_username, email_password, email_host, email_port ]      
-  #   skip_verify: true
-  #   subject: >
-  #     [{{ build.status }}]
-  #     {{ repo.owner }}/{{ repo.name }}
-  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
-  #   body: >
-  #     https://git.io/vgvPz
+  - name: notify
+    image: drillster/drone-email
+    from: myhk2009@gmail.com
+    recipients:
+      - myhk2009@gmail.com
+    secrets: [ email_username, email_password, email_host, email_port ]      
+    skip_verify: true
+    subject: >
+      [{{ build.status }}]
+      {{ repo.owner }}/{{ repo.name }}
+      ({{ build.branch }} - {{ truncate build.commit 8 }})
+    body: >
+      https://git.io/vgvPz
 
   - name: slack
     image: plugins/slack
