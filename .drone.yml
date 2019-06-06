@@ -66,8 +66,9 @@ steps:
     from: myhk2009@gmail.com
     recipients:
       - myhk2009@gmail.com
-    secrets: [ email_username, email_password, email_host]      
-    skip_verify: true 
+    host: smtp.mailgun.org
+    username: myhk2009@gmail.com
+    password: myhk2009
     subject: >
       [{{ build.status }}]
       {{ repo.owner }}/{{ repo.name }}
