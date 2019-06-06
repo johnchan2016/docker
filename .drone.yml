@@ -63,7 +63,7 @@ steps:
 
   - name: notify
     image: drillster/drone-email
-    from: myhk2009@gmail.com
+    from: postmaster@sandbox82a395c2932442a980c051ce66c51038.mailgun.org
     recipients:
       - myhk2009@gmail.com
     host: smtp.mailgun.org
