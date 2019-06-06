@@ -67,8 +67,8 @@ steps:
     recipients:
       - myhk2009@gmail.com
     host: smtp.mailgun.org
-    username: myhk2009@gmail.com
-    password: myhk2009
+    username: postmaster@sandbox82a395c2932442a980c051ce66c51038.mailgun.org
+    password: 387eeadb70d66d2c496718aaf7adb18d-87cdd773-091417db
     subject: >
       [{{ build.status }}]
       {{ repo.owner }}/{{ repo.name }}
