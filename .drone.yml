@@ -19,14 +19,14 @@ steps:
           - push
           - pull_request
 
-  - name: get-tag-no
-    image: alpine
-    commands:
-      - sh ./scripts/build-tag.sh
-      - echo $$EMAIL_USERNAME
-      - echo $$EMAIL_PASSWORD
-      - echo $$EMAIL_HOST
-      - echo $$EMAIL_PORT
+  # - name: get-tag-no
+  #   image: alpine
+  #   commands:
+  #     - sh ./scripts/build-tag.sh
+  #     - echo $$EMAIL_USERNAME
+  #     - echo $$EMAIL_PASSWORD
+  #     - echo $$EMAIL_HOST
+  #     - echo $$EMAIL_PORT
 
 
   - name: publish-test-image
@@ -34,11 +34,11 @@ steps:
     settings:
       repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
       registry: docker.io
-      username: myhk2009
-        #from_secret: DOCKER_USERNAME   # docker hub a/c
-      password: abcd_1234
-        #from_secret: DOCKER_PASSWORD
-      tag: [1, 1.0, latest]
+      username:
+        from_secret: DOCKER_USERNAME   # docker hub a/c
+      password:
+        from_secret: DOCKER_PASSWORD
+      tag: [ 1.0, 1.0.0, latest ]
         #- ${TAG_NO}
       commands:
         - docker version
@@ -66,11 +66,7 @@ steps:
     from: myhkapple@gmail.com
     recipients:
       - myhkapple@gmail.com
-    #secrets: [ email_username, email_password, email_host, email_port ]    
-    host: smtp.gmail.com
-    username: myhkapple
-    password: abcd_1234
-    skip_verify: true
+    secrets: [ email_username, email_password, email_host, email_port ]    
     subject: >
       [{{ build.status }}]
       {{ repo.owner }}/{{ repo.name }}
@@ -81,7 +77,8 @@ steps:
   - name: slack
     image: plugins/slack
     settings:
-      webhook: https://hooks.slack.com/services/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
+      webhook: 
+        from_secret: slack_webhook
       channel: dev
       username: myhk2009
     when:

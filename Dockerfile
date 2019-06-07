@@ -1,4 +1,3 @@
-# 使用 Node 的版本
 FROM node:12.2.0-alpine
 
 COPY . /usr/ci-test
