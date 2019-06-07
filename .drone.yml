@@ -34,10 +34,10 @@ steps:
     settings:
       repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
       registry: docker.io
-      username: #myhk2009
-        from_secret: DOCKER_USERNAME   # docker hub a/c
-      password: #abcd_1234
-        from_secret: DOCKER_PASSWORD
+      username: myhk2009
+        #from_secret: DOCKER_USERNAME   # docker hub a/c
+      password: abcd_1234
+        #from_secret: DOCKER_PASSWORD
       tag: [1, 1.0, latest]
         #- ${TAG_NO}
       commands:
@@ -61,19 +61,22 @@ steps:
   #   when:
   #     event: [push, tag, deployment]
 
-  # - name: notify
-  #   image: drillster/drone-email
-  #   from: myhkapple@gmail.com
-  #   recipients:
-  #     - myhkapple@gmail.com
-  #   secrets: [ email_username, email_password, email_host, email_port ]      
-  #   skip_verify: true
-  #   subject: >
-  #     [{{ build.status }}]
-  #     {{ repo.owner }}/{{ repo.name }}
-  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
-  #   body: >
-  #     https://git.io/vgvPz
+  - name: notify
+    image: drillster/drone-email
+    from: myhkapple@gmail.com
+    recipients:
+      - myhkapple@gmail.com
+    host: smtp.gmail.com
+    username: myhkapple
+    password: abcd_1234
+    port: 465 
+    skip_verify: true
+    subject: >
+      [{{ build.status }}]
+      {{ repo.owner }}/{{ repo.name }}
+      ({{ build.branch }} - {{ truncate build.commit 8 }})
+    body: >
+      https://git.io/vgvPz
 
   - name: slack
     image: plugins/slack
