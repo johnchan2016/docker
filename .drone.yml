@@ -25,7 +25,6 @@ steps:
       - ./env/build.env
     commands:
       - sh ./scripts/build-tag.sh
-      - docker container ls -a
 
   - name: publish-test-image
     image: plugins/docker
