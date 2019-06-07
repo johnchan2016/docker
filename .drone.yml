@@ -13,35 +13,88 @@ steps:
         include:
           - feature/*
           - master
-          - dev
+          - develop
       event:
         include:
           - push
           - pull_request
 
-  - name: build-test-image
+  - name: get-tag-no
+    image: alpine
+    env_file:
+      - ./env/build.env
+    commands:
+      - sh ./scripts/build-tag.sh
+
+  - name: publish-test-image
     image: plugins/docker
     settings:
-      repo: allovince/drone-ci-demo
-      username: allovince
+      repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
+      registry: docker.io
+      username:
+        from_secret: docker_username   # docker hub a/c
       password:
-        from_secret: DOCKER_PASSWORD
-      tag:
-        - test
+        from_secret: docker_password
     when:
-      branch: dev
-      event: push
+      branch: feature/*
+      event: 
+        include:
+          - push      
+          - pull_request
 
-  - name: notify
-    image: drillster/drone-email
-    from: myhkapple@gmail.com
-    host: smtp.gmail.com
-    port: 587
-    username: myhkapple
-    password: abcd_1234
-    subject: >
-      [{{ build.status }}]
-      {{ repo.owner }}/{{ repo.name }}
-      ({{ build.branch }} - {{ truncate build.commit 8 }})
-    body: >
-      https://git.io/vgvPz
+  # - name: deploy-image
+  #   image: appleboy/drone-ssh
+  #   pull: true  # always pull the latest version of the `drone-ssh` plugin
+  #   secrets: [ ssh_username, ssh_password ]
+  #   host: http://localhost
+  #   port: 22
+  #   command_timeout: 180
+  #   script:
+  #     - /bin/bash ./scripts/deploy.sh  # or whereever you put your `deploy.sh`
+  #   when:
+  #     event: [push, tag, deployment]
+
+  # - name: notify
+  #   image: drillster/drone-email
+  #   from: myhkapple@gmail.com
+  #   recipients:
+  #     - myhkapple@gmail.com
+  #   secrets: [ email_username, email_password, email_host, email_port ]    
+  #   subject: >
+  #     [{{ build.status }}]
+  #     {{ repo.owner }}/{{ repo.name }}
+  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
+  #   body: >
+  #     https://git.io/vgvPz
+
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook: 
+        from_secret: slack_webhook
+      channel: dev
+      username: myhk2009
+    when:
+        status: [ success, failure ]
+    template: >
+        {{#success build.status}}
+            {{build.author}} trigger {{repo.name}} build {{build.number}} by {{build.event}} to branch {{build.branch}} succeeded.
+            <{{build.link}}>
+        {{else}}
+            {{repo.name}} build {{build.number}} to branch {{build.branch}} failed. Fix me please.
+            <{{build.link}}>
+        {{/success}}
+
+    branches: [ master, develop, feature/* ]
+
+  - name: ssh
+    image: appleboy/drone-ssh
+    host: http://localhost:8000
+    username: johnchan
+    port: 22
+    secrets: [ ssh_password ]
+    # volumes:
+    #   - /root/drone_rsa:/root/ssh/drone_rsa
+    # key_path: /root/ssh/drone_rsa
+    script:
+      - echo "test ssh"

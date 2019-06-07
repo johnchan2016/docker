@@ -1,12 +1,28 @@
-version: "2"
+version: "3"
 
 services:
+  nginx:
+    image: nginx:1.16.0-alpine
+    container_name: webserver
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/log:/var/log/nginx
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    depends_on:
+      - drone-server
+      - drone-agent
+    ports:
+      - 8080:80
+    networks:
+      - appnet
+
   drone-server:
-    image: drone/drone:1
+    image: drone/drone:1.1
     container_name: drone-server
     ports:
-      - 8000:8000
-      - 9000
+      - 8000:80
+      - 8009:9000
     volumes:
       - /var/lib/drone:/data
     restart: always
@@ -18,13 +34,13 @@ services:
       - DRONE_GITHUB_CLIENT_SECRET=511fb461d7fb1f72bec6a8d581bae6566a6597dd
       - DRONE_RUNNER_CAPACITY=2
       - DRONE_SECRET=secret
-      - DRONE_USER_CREATE=username:johnchan2016,admin:true
+      - DRONE_USER_CREATE=username:johnchan2016,admin:true # github username
       - DRONE_SERVER_PROTO=http
     networks:
       - appnet
 
   drone-agent:
-    image: drone/agent:1
+    image: drone/agent:1.1
     container_name: drone-agent
     command: agent
     restart: always
@@ -41,4 +57,3 @@ services:
 
 networks:
   appnet:
-    external: true
