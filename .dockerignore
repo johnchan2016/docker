@@ -10,3 +10,6 @@ dist
 .drone.yml
 docker-compose.yml
 nginx
+test
+gulpfile.js
+.eslintrc.js
