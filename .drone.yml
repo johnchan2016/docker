@@ -32,9 +32,9 @@ steps:
       repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
       registry: docker.io
       username:
-        from_secret: DOCKER_USERNAME   # docker hub a/c
+        from_secret: docker_username   # docker hub a/c
       password:
-        from_secret: DOCKER_PASSWORD
+        from_secret: docker_password
       tags: [1.0.0, latest]
     when:
       branch: feature/*
