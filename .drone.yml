@@ -32,7 +32,8 @@ steps:
   - name: publish-test-image
     image: plugins/docker
     settings:
-      repo: myhk2009/docker-ci  #private image: add docker.io
+      repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
+      registry: docker.io
       username: 
         from_secret: DOCKER_USERNAME   # docker hub a/c
       password:
