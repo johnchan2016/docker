@@ -35,7 +35,6 @@ steps:
         from_secret: docker_username   # docker hub a/c
       password:
         from_secret: docker_password
-      tags: [latest]
     when:
       branch: feature/*
       event: 
