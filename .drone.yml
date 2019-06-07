@@ -66,10 +66,10 @@ steps:
     from: myhkapple@gmail.com
     recipients:
       - myhkapple@gmail.com
+    #secrets: [ email_username, email_password, email_host, email_port ]    
     host: smtp.gmail.com
     username: myhkapple
     password: abcd_1234
-    port: 465 
     skip_verify: true
     subject: >
       [{{ build.status }}]
