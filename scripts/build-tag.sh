@@ -15,6 +15,7 @@
 #     echo "Current Version, $version"
 # fi
 
+# override TAG_NO from build.env
 version=$(cat package.json \
     | grep version \
     | head -1 \
@@ -22,5 +23,5 @@ version=$(cat package.json \
     | sed 's/[",]//g' \
     | tr -d '[[:space:]]')
 echo "Current Version, $version" #variable
-export TAG_NO="$version"
+TAG_NO="$version"
 echo "TAG_NO, ${TAG_NO}" # environment variables

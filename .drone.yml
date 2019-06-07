@@ -19,14 +19,14 @@ steps:
           - push
           - pull_request
 
-  # - name: get-tag-no
-  #   image: alpine
-  #   commands:
-  #     - sh ./scripts/build-tag.sh
-  #     - echo $$EMAIL_USERNAME
-  #     - echo $$EMAIL_PASSWORD
-  #     - echo $$EMAIL_HOST
-  #     - echo $$EMAIL_PORT
+  - name: get-tag-no
+    image: alpine
+    commands:
+      - sh ./scripts/build-tag.sh
+      - echo $$EMAIL_USERNAME
+      - echo $$EMAIL_PASSWORD
+      - echo $$EMAIL_HOST
+      - echo $$EMAIL_PORT
 
 
   - name: publish-test-image
