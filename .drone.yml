@@ -35,11 +35,6 @@ steps:
         from_secret: DOCKER_USERNAME   # docker hub a/c
       password:
         from_secret: DOCKER_PASSWORD
-      tag: 
-        - ${TAG_NO}
-      commands:
-        - docker version
-        - echo "TAG_NO, ${TAG_NO}"
     when:
       branch: feature/*
       event: 

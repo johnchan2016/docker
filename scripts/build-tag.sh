@@ -23,5 +23,4 @@ version=$(cat package.json \
     | sed 's/[",]//g' \
     | tr -d '[[:space:]]')
 echo "Current Version, $version" #variable
-TAG_NO="$version"
-echo "TAG_NO, ${TAG_NO}" # environment variables
+echo -n $(git-version) > .tags
