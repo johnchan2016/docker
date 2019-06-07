@@ -91,6 +91,7 @@ steps:
     image: appleboy/drone-ssh
     host: http://localhost:8000
     username: johnchan
+    port: 22
     secrets: [ ssh_password ]
     # volumes:
     #   - /root/drone_rsa:/root/ssh/drone_rsa
