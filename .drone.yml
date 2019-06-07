@@ -25,6 +25,7 @@ steps:
       - ./env/build.env
     commands:
       - sh ./scripts/build-tag.sh
+      - docker container ls -a
 
   - name: publish-test-image
     image: plugins/docker
@@ -35,6 +36,8 @@ steps:
         from_secret: docker_username   # docker hub a/c
       password:
         from_secret: docker_password
+    commands:
+      - docker container ls -a
     when:
       branch: feature/*
       event: 
