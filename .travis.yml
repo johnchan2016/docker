@@ -22,10 +22,10 @@ cache:
   #     on:
   #       all_branches: true
   #     skip_cleanup: true
-notifications:
-  email:
-    recipients:
-    - myhk2009@gmail.com
-    on_success: always
-    on_failure: always
+# notifications:
+#   email:
+#     recipients:
+#     - myhk2009@gmail.com
+#     on_success: always
+#     on_failure: always
     
