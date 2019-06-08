@@ -42,23 +42,11 @@ steps:
           - push      
           - pull_request
 
-  # - name: deploy-image
-  #   image: appleboy/drone-ssh
-  #   pull: true  # always pull the latest version of the `drone-ssh` plugin
-  #   secrets: [ ssh_username, ssh_password ]
-  #   host: http://localhost
-  #   port: 22
-  #   command_timeout: 180
-  #   script:
-  #     - /bin/bash ./scripts/deploy.sh  # or whereever you put your `deploy.sh`
-  #   when:
-  #     event: [push, tag, deployment]
-
   # - name: notify
   #   image: drillster/drone-email
-  #   from: myhk2009@gmail.com
+  #   from: xxxx@gmail.com
   #   recipients:
-  #     - myhk2009@gmail.com
+  #     - xxxx@gmail.com
   #   secrets: [ email_username, email_password, email_host, email_port ]
   #   skip_verify: true 
   #   subject: >
@@ -74,7 +62,7 @@ steps:
       webhook: 
         from_secret: slack_webhook
       channel: dev
-      username: myhk2009
+      username: slack_username
     when:
         status: [ success, failure ]
     template: >
