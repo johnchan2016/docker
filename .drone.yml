@@ -44,7 +44,7 @@ steps:
 
   # method 1: use shell script to build & run image          
   - name: deploy
-    image: ubuntu-alpine
+    image: alpine
     commands:
         - echo "test deploy"
       #- sh ./scripts/deploy.sh
