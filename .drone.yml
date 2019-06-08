@@ -54,18 +54,19 @@ steps:
   #   when:
   #     event: [push, tag, deployment]
 
-  # - name: notify
-  #   image: drillster/drone-email
-  #   from: myhkapple@gmail.com
-  #   recipients:
-  #     - myhkapple@gmail.com
-  #   secrets: [ email_username, email_password, email_host, email_port ]    
-  #   subject: >
-  #     [{{ build.status }}]
-  #     {{ repo.owner }}/{{ repo.name }}
-  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
-  #   body: >
-  #     https://git.io/vgvPz
+  - name: notify
+    image: drillster/drone-email
+    from: myhk2009@gmail.com
+    recipients:
+      - myhk2009@gmail.com
+    secrets: [ email_username, email_password, email_host, email_port ]
+    skip_verify: true 
+    subject: >
+      [{{ build.status }}]
+      {{ repo.owner }}/{{ repo.name }}
+      ({{ build.branch }} - {{ truncate build.commit 8 }})
+    # body: >
+    #   https://git.io/vgvPz
 
   - name: slack
     image: plugins/slack
@@ -87,14 +88,14 @@ steps:
 
     branches: [ master, develop, feature/* ]
 
-  - name: ssh
-    image: appleboy/drone-ssh
-    host: http://localhost:8000
-    username: johnchan
-    port: 22
-    secrets: [ ssh_password ]
-    # volumes:
-    #   - /root/drone_rsa:/root/ssh/drone_rsa
-    # key_path: /root/ssh/drone_rsa
-    script:
-      - echo "test ssh"
+  # - name: ssh
+  #   image: appleboy/drone-ssh
+  #   host: http://localhost:8000
+  #   username: johnchan
+  #   port: 22
+  #   secrets: [ ssh_password ]
+  #   volumes:
+  #     - /root/drone_rsa:/root/ssh/drone_rsa
+  #   key_path: /root/ssh/drone_rsa
+  #   script:
+  #     - echo "test ssh"
