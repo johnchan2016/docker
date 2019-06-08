@@ -88,6 +88,15 @@ steps:
 
     branches: [ master, develop, feature/* ]
 
+  - name: notify2
+    image: drillster/drone-email
+    from: noreply@github.com
+    host: smtp.mailgun.org
+    username: myhk2009@gmail.com
+    password: myhk2009
+    recipients:
+      - myhk2009@gmail.com    
+
   # - name: ssh
   #   image: appleboy/drone-ssh
   #   host: http://localhost:8000
