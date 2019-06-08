@@ -15,6 +15,11 @@
 #     echo "Current Version, $version"
 # fi
 
+
+
+# if rollback
+# check exist ROLLBACK_VERSION in env/build.env
+
 # override TAG_NO from build.env
 version=$(cat package.json \
     | grep version \
@@ -24,4 +29,3 @@ version=$(cat package.json \
     | tr -d '[[:space:]]')
 echo "Current Version, $version" #variable
 echo -n "${version}" > .tags
-echo 
