@@ -21,14 +21,14 @@
 # check exist ROLLBACK_VERSION in env/build.env
 
 # override TAG_NO from build.env
-version=$(cat package.json \
-    | grep version \
-    | head -1 \
-    | awk -F: '{ print $2 }' \
-    | sed 's/[",]//g' \
-    | tr -d '[[:space:]]')
+package_v=$(cat package.json \
+        | grep version \
+        | head -1 \
+        | awk -F: '{ print $2 }' \
+        | sed 's/[",]//g' \
+        | tr -d '[[:space:]]')
 
-version+=",latest"
+version+="${package_v},latest"
 
 echo "Current Version, $version" #variable
 echo -n "${version}" > .tags
