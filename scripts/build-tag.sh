@@ -28,7 +28,7 @@ version=$(cat package.json \
     | sed 's/[",]//g' \
     | tr -d '[[:space:]]')
 
-version=",latest"
+version+=",latest"
 
 echo "Current Version, $version" #variable
 echo -n "${version}" > .tags
