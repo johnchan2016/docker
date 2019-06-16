@@ -1,0 +1,1 @@
+docker exec -d -it -p 8100:8100 --name=website {imageName} npm start

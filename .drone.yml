@@ -42,6 +42,30 @@ steps:
           - push      
           - pull_request
 
+  # method 1: use shell script to build & run image          
+  - name: deploy
+    image: alpine
+    commands:
+        - echo "test deploy"
+      #- sh ./scripts/deploy.sh
+      #- sh ./scripts/run.sh
+    when:
+      branch: feature/*
+      event: 
+        include:
+          - push      
+          - pull_request    
+
+  # method 2: use ssh
+  # - name: deploy-with-ssh
+  #   image: appleboy/drone-ssh
+  #   host: target-host
+  #   username: target-username
+  #   port: 22
+  #   secrets: [ ssh_private_key ]
+  #   script:
+  #     - echo "test ssh"      
+
   # - name: notify
   #   image: drillster/drone-email
   #   from: xxxx@gmail.com
@@ -75,15 +99,3 @@ steps:
         {{/success}}
 
     branches: [ master, develop, feature/* ]
-
-  # - name: ssh
-  #   image: appleboy/drone-ssh
-  #   host: http://localhost:8000
-  #   username: johnchan
-  #   port: 22
-  #   secrets: [ ssh_password ]
-  #   volumes:
-  #     - /root/drone_rsa:/root/ssh/drone_rsa
-  #   key_path: /root/ssh/drone_rsa
-  #   script:
-  #     - echo "test ssh"
