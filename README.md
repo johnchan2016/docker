@@ -111,7 +111,7 @@ USER app
 CMD ["npm", "run", "start"]
 ```
 
-`docker-compose.yml`
+`docker-compose.yml` \
 ```
 version: '3'
 services:
@@ -131,7 +131,7 @@ services:
     container_name: website2
 ```
 
-`docker-compose.dev.yml`
+`docker-compose.dev.yml` \
 Create a common network for containers' communication
 ```
 version: '3'
@@ -165,14 +165,14 @@ networks:
   web:
 ```
 
-`.dockerignore`
+`.dockerignore` \
 it is used to prevent unneccesary installation packages clone into image
 ```
 node_modules
 npm-debug.log
 ```
 
-`nginx.conf`
+`nginx.conf` \
 **upstream** defines a group of servers to listen
 ```
 upstream node_cluster {
@@ -202,7 +202,7 @@ server {
     }
 }
 ```
-## Logging
+## Logging \
 ### Installation
 [Graylog installation guide on docker](http://docs.graylog.org/en/3.0/pages/installation/docker.html)
 Advantages of graylog over ELK
@@ -213,14 +213,17 @@ Advantages of graylog over ELK
 
 ### How to get message into Graylog
 1. Properly map port in container
-You have to config port mapping in docker-compose file, otherwise data will not go through.
+  You have to config port mapping in docker-compose file, otherwise data will not go through.
 
-For example, to start a GELF TCP input on port 12201, stop your container and recreate it, while appending -p 12201: 12201 to your docker run command.
+  For example, to start a GELF TCP input on port 12201, stop your container and recreate it, while appending -p 12201: 12201 to your docker run command.
 
-start a GELF UDP input on port 1514, stop your container and recreate it, while appending -p 1514: 1514/udp to your docker run command.
+  start a GELF UDP input on port 1514, stop your container and recreate it, while appending -p 1514: 1514/udp to your docker run command.
 
-2. GELF HTTP 
-curl -XPOST http://0.0.0.0:12201/gelf -p0 -d '{"message":"这是一条消息", "host":"172.3.3.3", "facility":"test", "topic": "meme"}'
+2. GELF HTTP \
+  input command 
+  ```
+  curl -XPOST http://0.0.0.0:12201/gelf -p0 -d '{"message":"这是一条消息", "host":"172.3.3.3", "facility":"test", "topic": "meme"}'
+  ```
 
 ### Send Message to Graylog
 1. login into Graylog
@@ -249,6 +252,8 @@ curl -XPOST http://0.0.0.0:12201/gelf -p0 -d '{"message":"这是一条消息", "
 <p>
   <img src="./guide/images/05.png" alt="05">
 </p>
+
+7. Set up email template
 <p>
   <img src="./guide/images/06.png" alt="06">
 </p>
