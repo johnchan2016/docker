@@ -1,11 +1,12 @@
+# exec this Dockerfile by run.sh for CD
 FROM node:12.2.0-alpine
 
-RUN groupadd -r app && \
-  useradd -r -g app -d /home/app -s /sbin/nologin -c "Docker user" app
-
-COPY . /usr/ci-test
+RUN groupadd -r docker \
+   && useradd -m -r -g docker app
 
 WORKDIR /usr/ci-test
+
+COPY . .
 
 RUN npm install
 
