@@ -12,13 +12,14 @@
 2. Install Oracle virtualbox to install Ubuntu to feel what the docker is.
 3. install docker-compose in Ubuntu
 
-```a. install
+```
+  # install
   sudo wget https://github.com/docker/compose/releases/download/{versionNumber}/docker-compose-Linux-x86_64 -O /usr/local/bin/docker-compose
 
-  b. grant permission
+  # grant permission
   sudo chmod +x /usr/local/bin/docker-compose
 
-  c. check installation
+  # check installation
   docker-compose –version
 ```
 
@@ -64,7 +65,9 @@ db:
 ```
 
 To deploy with this production Compose file you can run
-```docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d```
+```
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
 
 *** Nginx
 For me, its main propose is to pretend to run nodejs cluster & balance workload (一個 Nginx server 跟幾個 web server)
@@ -209,39 +212,51 @@ Advantages of graylog over ELK
 
 
 ### How to get message into Graylog
-a. Properly map port in container
+1. Properly map port in container
 You have to config port mapping in docker-compose file, otherwise data will not go through.
 
 For example, to start a GELF TCP input on port 12201, stop your container and recreate it, while appending -p 12201: 12201 to your docker run command.
 
 start a GELF UDP input on port 1514, stop your container and recreate it, while appending -p 1514: 1514/udp to your docker run command.
 
-b. GELF HTTP 
+2. GELF HTTP 
 curl -XPOST http://0.0.0.0:12201/gelf -p0 -d '{"message":"这是一条消息", "host":"172.3.3.3", "facility":"test", "topic": "meme"}'
 
 ### Send Message to Graylog
 1. login into Graylog
 
 2.	Create an Input that log can be sent in, e.g. “Gelf Http”
-![alt text](http://url/to/img.png)
+<p>
+  <img src="./guide/images/01.png" alt="01">
+</p>
 
 3.	Create Index Set, e.g. “Access Log”
-![alt text](http://url/to/img.png)
+<p>
+  <img src="./guide/images/02.png" alt="02">
+</p>
 
 4.	Create New Stream “Log Error Stream” include index set named “Access Log”
-![alt text](http://url/to/img.png)
+<p>
+  <img src="./guide/images/03.png" alt="03">
+</p>
 
 5. 	Add Stream Rule that include an Input with “Gelf Http” & Field “level” match exactly “3”. Click I’m done.
-![alt text](http://url/to/img.png)
+<p>
+  <img src="./guide/images/04.png" alt="04">
+</p>
 
 6. 	Stream / Manage Alert, Create new Notification for Alerts. Then Create new Condition / Notification.
-![alt text](http://url/to/img.png)
-![alt text](http://url/to/img.png)
+<p>
+  <img src="./guide/images/05.png" alt="05">
+</p>
+<p>
+  <img src="./guide/images/06.png" alt="06">
+</p>
 
 ### Send email via gmail SMTP
 It is easy to setup if follow guide. Or you can enable to send email by gmail SMTP.
 
-a. You can add the following lines in environment in graylog section
+1. You can add the following lines in environment in graylog section
 ```
 environment:
   - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
@@ -254,10 +269,10 @@ environment:
   - GRAYLOG_TRANSPORT_EMAIL_AUTH_PASSWORD=gmailPasword
 ```
 
-b. Click on the Forwarding/IMAP tab and scroll down to the IMAP Access section: 
+2. Click on the Forwarding/IMAP tab and scroll down to the IMAP Access section: 
 IMAP must be **enabled** in order for emails to be properly copied to your sent folder.
 
-c. If not successful, just follow the steps [Lower security of gmail a/c / 允許低安全性應用程式的存取權](https://github.com/matomo-org/matomo/issues/8613)
+3. If not successful, just follow the steps [Lower security of gmail a/c / 允許低安全性應用程式的存取權](https://github.com/matomo-org/matomo/issues/8613)
 -	前往您的 Google 帳戶
 -	按一下左側導覽面板上的 [安全性]
 -	在頁面底部的「低安全性應用程式存取權」面板上，按一下 [開啟存取權]
