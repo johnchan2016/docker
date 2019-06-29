@@ -1,8 +1,9 @@
+# exec this Dockerfile by run.sh for CD
 FROM node:12.2.0-alpine
 
-COPY . /usr/ci-test
-
 WORKDIR /usr/ci-test
+
+COPY . .
 
 RUN npm install
 

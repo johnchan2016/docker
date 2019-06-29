@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  nginx:
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/log:/var/log/nginx
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - appnet
+
+  drone-server:
+    ports:
+      - 8000:80
+      - 8009:9000
+    volumes:
+      - /var/lib/drone:/data
+    restart: always
+    env_file:
+      - env/drone-server.env
+    networks:
+      - appnet
+
+  drone-agent:
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - env/drone-agent.env
+    networks:
+      - appnet
+
+networks:
+  appnet:
