@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:1.16.0-alpine
+    container_name: webserver
+    depends_on:
+      - drone-server
+      - drone-agent    
+
+  drone-server:
+    image: drone/drone:1.1
+    container_name: drone-server
+
+  drone-agent:
+    image: drone/agent:1.1
+    container_name: drone-agent

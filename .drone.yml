@@ -1,0 +1,101 @@
+kind: pipeline
+name: deploy
+
+steps:
+  - name: unit-test
+    image: node:12.2.0-alpine
+    commands:
+      - npm install
+      - npm run lint
+      - npm run test
+    when:
+      branch:
+        include:
+          - feature/*
+          - master
+          - develop
+      event:
+        include:
+          - push
+          - pull_request
+
+  - name: get-tag-no
+    image: alpine
+    env_file:
+      - ./env/build.env
+    commands:
+      - sh ./scripts/build-tag.sh
+
+  - name: publish-test-image
+    image: plugins/docker
+    settings:
+      repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
+      registry: docker.io
+      username:
+        from_secret: docker_username   # docker hub a/c
+      password:
+        from_secret: docker_password
+    when:
+      branch: feature/*
+      event: 
+        include:
+          - push      
+          - pull_request
+
+  # method 1: use shell script to build & run image          
+  - name: deploy
+    image: alpine
+    commands:
+        - echo "test deploy"
+      #- sh ./scripts/deploy.sh
+      #- sh ./scripts/run.sh
+    when:
+      branch: feature/*
+      event: 
+        include:
+          - push      
+          - pull_request    
+
+  # method 2: use ssh
+  # - name: deploy-with-ssh
+  #   image: appleboy/drone-ssh
+  #   host: target-host
+  #   username: target-username
+  #   port: 22
+  #   secrets: [ ssh_private_key ]
+  #   script:
+  #     - echo "test ssh"      
+
+  # - name: notify
+  #   image: drillster/drone-email
+  #   from: xxxx@gmail.com
+  #   recipients:
+  #     - xxxx@gmail.com
+  #   secrets: [ email_username, email_password, email_host, email_port ]
+  #   skip_verify: true 
+  #   subject: >
+  #     [{{ build.status }}]
+  #     {{ repo.owner }}/{{ repo.name }}
+  #     ({{ build.branch }} - {{ truncate build.commit 8 }})
+    # body: >
+    #   https://git.io/vgvPz
+
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook: 
+        from_secret: slack_webhook
+      channel: dev
+      username: slack_username
+    when:
+        status: [ success, failure ]
+    template: >
+        {{#success build.status}}
+            {{build.author}} trigger {{repo.name}} build {{build.number}} by {{build.event}} to branch {{build.branch}} succeeded.
+            <{{build.link}}>
+        {{else}}
+            {{repo.name}} build {{build.number}} to branch {{build.branch}} failed. Fix me please.
+            <{{build.link}}>
+        {{/success}}
+
+    branches: [ master, develop, feature/* ]
