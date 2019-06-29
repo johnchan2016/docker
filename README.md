@@ -310,15 +310,16 @@ Drone uses a simple **YAML** configuration file, a superset of docker-compose, t
 
 ### CI / CD process:
 <p>
-<img src="./guide/images/ci-cd-process.png" alt=“ci-cd-process”>
+<img src="./guide/images/ci-cd-process.png" alt="ci-cd-process">
 </p>
 
-Drone consists of 2 components: \
+Drone consists of 2 components:
 -	Server: responsible for authentication, repository configuration, users, secrets and accepting webhooks. 
 -	Agent: receive build jobs and actually run your workflows.
 
 ### installation
 **docker-compose.yml**
+```
 version: "3"
 
 services:
@@ -362,15 +363,15 @@ services:
 
 networks:
   appnet:
-
+```
 
 ### How to communicate with Github
 Go to Personal account -> \
 Settings -> \
 developer settings -> \
 OAuth Apps -> \
-Register a new application -> \ 
-Fill in 'application name', 'authorization callback url' (must be public domain) -> \ 
+Register a new application -> \
+Fill in 'application name', 'authorization callback url' (must be public domain) -> \
 In the same page, find 'Client ID' & 'Client Secret'
 
 ## Installation Drone CLI
@@ -379,11 +380,13 @@ First, type the following cmd in terminal. \
   sudo install -t /usr/local/bin drone \
 
 In order to interact with the server using REST endpoints in command line tool, add your 'Drone Server URL' & 'Personan Access Token' from Drone Web UI in terminal \
+```
 export DRONE_SERVER=你的Drone Server URL
 export DRONE_TOKEN=你的Personan Access Token
+```
 
 ### Environment variables
-tag_vsersion in package.json can be used for the image built publishing for docker hub. \
+Field 'version' in package.json can be used for the image built publishing for docker hub. \
 Print  ${tag_version} in bash
 
 ### Secrets
@@ -415,7 +418,7 @@ steps:
           - pull_request         
 ```
 
-### use cache to boost building time (引入緩存減少重復下載)
+### Use cache to boost building time (引入緩存減少重復下載)
 **Volume Cache**
 ```
 steps:
@@ -456,7 +459,7 @@ volumes:
       - sh ./scripts/build-tag.sh
 ```
 
-**build-tag.sh**
+**build-tag.sh** \
 Get tag no. from package.json
 ```
 version=$(cat package.json \
@@ -554,5 +557,5 @@ $ sudo chmod +x deploy.sh
 <img src="./guide/images/slack-web-hook.png" alt="slack-web-hook">
 </p>
 
-4. copy & paste the webhook url into slack settings in .drone.yml
+4. copy & paste the webhook url into slack settings in .drone.yml \
 Every time you trigger Drone CI, there will be an notification about success / fail in the slack
