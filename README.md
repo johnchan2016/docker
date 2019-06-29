@@ -7,7 +7,7 @@
 5. Cluster Monitoring, e.g. Kubenetes + Istio
 6. Health Check, e.g. CAdvisor + Prometheus + Grafana
 
-## Basic docker
+## 1. Docker
 1. At the beginning, scan official docker doc
 2. Install Oracle virtualbox to install Ubuntu to feel what the docker is.
 3. install docker-compose in Ubuntu
@@ -24,7 +24,7 @@
 ```
 
 
-## Testing projects
+## 2. Testing projects
 use node.js to create websites with Nginx using docker-compose
 
 ### Portainer
@@ -111,7 +111,7 @@ USER app
 CMD ["npm", "run", "start"]
 ```
 
-`docker-compose.yml` \
+`docker-compose.yml`
 ```
 version: '3'
 services:
@@ -202,9 +202,9 @@ server {
     }
 }
 ```
-## Logging \
-### Installation
-[Graylog installation guide on docker](http://docs.graylog.org/en/3.0/pages/installation/docker.html)
+## 3. Logging
+### Installation 
+[Graylog installation guide on docker](http://docs.graylog.org/en/3.0/pages/installation/docker.html) \
 Advantages of graylog over ELK
 - less complicate setup, fit for beginner
 - have its own built-in dashboard & friendly UI
@@ -282,3 +282,277 @@ IMAP must be **enabled** in order for emails to be properly copied to your sent 
 -	按一下左側導覽面板上的 [安全性]
 -	在頁面底部的「低安全性應用程式存取權」面板上，按一下 [開啟存取權]
 
+
+## 4. CI/CD (Drone)
+<p>
+<img src="./guide/images/ci-cd-concept.png" alt=“ci-cd-concept”>
+</p>
+
+CI/CD:
+1. Continue to **test** every change.
+2. Continue to **build** every change.
+3. Continue to **deploy** every change.
+
+### What is Drone? [Drone CI Doc](https://docs.drone.io/)
+Drone is a Continuous Delivery system built on container technology. \
+Drone uses a simple **YAML** configuration file, a superset of docker-compose, to define and execute Pipelines inside Docker containers.
+
+**Pros:**
+- easy to setup
+- simple to use & define pipeline using yaml format
+- faster building time beacuse container native
+- be able to integrate with Github & other self-hosting software, e.g. Gitea, GitLab, Gogs, Gitbucket.
+
+**Cons:**
+- imcomprehensive documentation
+- small community
+- less plugins provided, but you can write by yourself
+
+### CI / CD process:
+<p>
+<img src="./guide/images/ci-cd-process.png" alt=“ci-cd-process”>
+</p>
+
+Drone consists of 2 components: \
+-	Server: responsible for authentication, repository configuration, users, secrets and accepting webhooks. 
+-	Agent: receive build jobs and actually run your workflows.
+
+### installation
+**docker-compose.yml**
+version: "3"
+
+services:
+  drone-server:
+    image: drone/drone:1.1
+    container_name: drone-server
+    ports:
+      - 8000:80
+      - 8009:9000
+    volumes:
+      - /var/lib/drone:/data
+    restart: always
+    environment:
+      - DRONE_DEBUG=true
+      - DRONE_HOST=http://drone-server:8000
+      - DRONE_GITHUB_SERVER=https://github.com
+      - DRONE_GITHUB_CLIENT_ID={}
+      - DRONE_GITHUB_CLIENT_SECRET={}
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_SECRET=secret
+      - DRONE_USER_CREATE=username:{github_username},admin:true
+      - DRONE_SERVER_PROTO=http
+    networks:
+      - appnet
+
+  drone-agent:
+    image: drone/agent:1.1
+    container_name: drone-agent
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_DEBUG=true
+      - DRONE_SERVER=http://drone-server:9000
+      - DRONE_SECRET=secret
+    networks:
+      - appnet
+
+networks:
+  appnet:
+
+
+### How to communicate with Github
+Go to Personal account -> \
+Settings -> \
+developer settings -> \
+OAuth Apps -> \
+Register a new application -> \ 
+Fill in 'application name', 'authorization callback url' (must be public domain) -> \ 
+In the same page, find 'Client ID' & 'Client Secret'
+
+## Installation Drone CLI
+First, type the following cmd in terminal. \
+  curl http://downloads.drone.io/release/linux/amd64/drone.tar.gz | tar zx \
+  sudo install -t /usr/local/bin drone \
+
+In order to interact with the server using REST endpoints in command line tool, add your 'Drone Server URL' & 'Personan Access Token' from Drone Web UI in terminal \
+export DRONE_SERVER=你的Drone Server URL
+export DRONE_TOKEN=你的Personan Access Token
+
+### Environment variables
+tag_vsersion in package.json can be used for the image built publishing for docker hub. \
+Print  ${tag_version} in bash
+
+### Secrets
+You can hide you sensitive info by using secret function in Drone. \
+Open Drone Web UI, input key/value, e.g. password/abc123, so the Drone can use this secret when executing CI.
+
+## Pipeline 流程
+**.drone.yml**
+```
+kind: pipeline
+name: deploy
+
+steps:
+  - name: unit-test
+    image: node:12.2.0-alpine
+    commands:
+      - npm install
+      - npm run lint
+      - npm run test
+    when:
+      branch:
+        include:
+          - feature/*
+          - master
+          - develop
+      event:
+        include:
+          - push
+          - pull_request         
+```
+
+### use cache to boost building time (引入緩存減少重復下載)
+**Volume Cache**
+```
+steps:
+- name: restore-cache
+  image: drillster/drone-volume-cache
+  volumes:
+  - name: cache
+    path: /cache
+  settings:
+    restore: true
+    mount:
+      - ./node_modules
+
+- name: rebuild-cache
+  image: drillster/drone-volume-cache
+  volumes:
+  - name: cache
+    path: /cache
+  settings:
+    rebuild: true
+    mount:
+      - ./node_modules
+
+volumes:
+  - name: cache
+    host: 
+      path: /tmp/cache
+```
+
+### How to build custom tag
+**pipeline**
+```
+  - name: get-tag-no
+    image: alpine
+    env_file:
+      - ./env/build.env
+    commands:
+      - sh ./scripts/build-tag.sh
+```
+
+**build-tag.sh**
+Get tag no. from package.json
+```
+version=$(cat package.json \
+    | grep version \
+    | head -1 \
+    | awk -F: '{ print $2 }' \
+    | sed 's/[",]//g' \
+    | tr -d '[[:space:]]')
+echo "Current Version, $version" #variable
+echo -n "${version}" > .tags
+```
+
+### Create Image & publish to Docker Hub
+When testings are done, the next step is to publish the latest image built to docker hub for later deployment
+
+**Dockerfile**
+```
+FROM node:12.2.0-alpine #use alpine to minimize the image size
+WORKDIR /usr/ci-test
+COPY . .
+RUN npm install
+EXPOSE 8100
+CMD ["npm", "run", "start"]
+```
+
+**Inside pipeline**
+```
+  - name: publish-test-image
+    image: plugins/docker
+    settings:
+      repo: docker.io/myhk2009/docker-ci  #private image: add docker.io
+      registry: docker.io # image host for pulling
+      username:
+        from_secret: DOCKER_USERNAME   # docker hub a/c
+      password:
+        from_secret: DOCKER_PASSWORD
+    when:
+      branch: feature/*
+      event: 
+        include:
+          - push      
+          - pull_request
+```
+
+### Create Deployment script
+**use git to download to host by Drone Agent & create script to replace new image**
+
+接著要在系統內建置要用來執行的 shell script，請在 terminal 內輸入以下指令：
+```
+vim deploy.sh
+```
+
+並輸入以下內容：
+```
+#!/bin/bash
+echo "Updating staging Server"
+echo "stopping projectName.service"
+sudo systemctl stop projectName.service
+
+# remove all outdated images and containers
+echo "removing outdated/dangling images and containers"
+docker stop container_name
+docker rm container_name
+
+#remove all-related & dangling images
+docker images | grep "^{image}" | awk '{print $1 ":" $2}' | xargs docker rmi
+
+# create new image for projectName
+echo "create new image for projectName"
+cd /home/stu60610/projectName
+git pull origin develop/master
+docker build -t=”{containerName}” . 
+
+# restart service which will use the newly pulled image
+echo “restarting projectName service”
+systemctl start projectName.service
+
+# App is updated!
+echo “projectName successfuly updated!”
+
+Be able to exec in non-root user, type the following cmd
+$ sudo chmod +x deploy.sh
+```
+
+### Slack Notification from Drone
+1. Setup slack workspace
+- Username: abc
+- Channel: dev
+- Webhook: webhook-url-from-slack
+
+2. Choose the channel you want to send message from drone
+
+3. Find 'integration settings' -> 'webhook url'
+<p>
+<img src="./guide/images/slack-web-hook.png" alt="slack-web-hook">
+</p>
+
+4. copy & paste the webhook url into slack settings in .drone.yml
+Every time you trigger Drone CI, there will be an notification about success / fail in the slack
